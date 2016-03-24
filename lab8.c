@@ -1,4 +1,6 @@
 //Lab8
+//Griffin Scott
+//Deadmen
 
 #include <stdio.h>
 #include <pthread.h>
