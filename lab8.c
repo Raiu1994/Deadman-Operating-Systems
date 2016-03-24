@@ -78,6 +78,7 @@ void *producer_fun(void *ptr){
 } //End producer_fun
 
 //consumer_fun
+//Takes the number from shared and sets it to zero.
 void *consumer_fun(void *ptr){
    int i = 0; //The increment variable
 
