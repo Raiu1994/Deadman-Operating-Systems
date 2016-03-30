@@ -76,7 +76,7 @@ if(Num_Arg == 0);{
 //Execute the command using fork and execvp
 //Create child process
 
-if(debug_fork){
+if(DEBUG_FORK){
   printf("Fork!");
   pid = fork ();
 }
@@ -85,16 +85,16 @@ if(pid<0){
   printf("Griffin says unable to fork, so new process!! Terminating.....\n");
   continue; //get new prompt, not exit
 } else if (pid ! = 0) {//this is the parent
-  if (debug_fork) printf("Parent waiting on child.\n");
+  if (DEBUG_FORK) printf("Parent waiting on child.\n");
   errorval = waitpid(-1, &childstatus, 0 );
   //check for errors
   if (errorval ==-1){
     printf("Griffin Shell: error waiting for child to exit.\n");
   }//End if
 
-    if (debug_fork)printf("Child process exiting")
+    if (DEBUG_FORK)printf("Child process exited.\n")
   } else { //this is the child
-    if(debug_fork) printf("Child calling execvp.\n");
+    if(DEBUG_FORK) printf("Child calling execvp.\n");
     returnval = execvp(input_args[0], input_args);
     //check errors
     if (returnval ==-1) {
@@ -102,8 +102,7 @@ if(pid<0){
     continue;
   }//End if
     exit(0);
-  }// End else
-     //if blank line,just continue
+    }// End else
    }//End while
 }//End main
 
@@ -115,5 +114,40 @@ int getinput(char **args, int maxargs){
   int inword = FALSE; //flag: are we currently reading a word?
   int i = 0; //loop counter
 
+  //Print debug info
+  if (DEBUG_GETINPUT) printf("Entering getinput(). \n");
 
-}
+  //Loop until the if statement detects a new line
+  while (1){
+    curchar = getc(stdin);
+    if (DEBUG_GETINPUT) printf("Read %c...", curchar);
+    numchar++; //One more character
+
+    //Check to see if we have exceeded max.
+    if (numchar > MAX_NUM_CHAR){
+      printf("Griffin Shell: Command too long. \n")
+      //Grab the rest of the input and trash it
+      while (curchar != '\n'){
+        curchar = getc(stdin);
+        printf("Discarding the %c...\n", curchar);
+        continue;
+      }//End while
+
+      //Exit this function, reporting the 0 arguements.
+      exit(0);
+    }//End if
+
+    //Read until whitespace
+    if ((curchar == ' ') || (curchar == '\t') || (curchar == '\n')) {
+      //If this is the first space past the end of a word, null terminates
+      //Resets flags, and print debugging info
+      if (inword == TRUE){
+        if (DEBUG_GETINPUT){
+          printf("That word has %d letters. \n", letterindex+1);
+          //Add the null terminatior
+          
+        }//End Debug if
+      }//End inword if
+    }//End if
+  }//End while
+} //End getinput
