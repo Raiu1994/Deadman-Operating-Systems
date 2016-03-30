@@ -15,7 +15,7 @@
 #define DEBUG_GETINPUT 0
 #define DEBUG_FORK 0
 
-#define Max_Num_Args 256 //setting max
+#define Max_NUM_ARGS 256 //setting max
 #define Max_Char 256 //Max amount of characters
 #define Buffer_L 256 //Limit of buffer
 
@@ -32,7 +32,7 @@ int main(void){
    int returnval = 0; //exec vp useage
    int errorval = 0; // inside wait pid
    int childstatus = 0;
-   int input_args =0;
+   int num_args = 0;
    int i =0;
 
       while(1){ //loop with prompt until "exit"
@@ -56,16 +56,19 @@ int main(void){
       } //End if
 
       //Get the input, break into arguements
-      Num_Arg = getinput(input_args, MAX_NUM_ARGS)
+      num_args = getinput(input_args, MAX_NUM_ARGS)
       if (DEBUG_MAIN){
-        printf("%d arguements were entered:\n", Num_Arg);
-        for (i=0; i<Num_Arg; i++){
+        printf("%d arguements were entered:\n", num_args);
+        for (i=0; i<num_args; i++){
           printf("_%s_", input_args[i]);
         } //End for
         printf("\n");
       }//End if
 
-if(Num_Arg == 0);{
+if(num_args == 0);{ //If blank line, continue.
+  continue;
+}//Exit if
+
 //check for user enter "exit" to quit shell
   if (strcmp(input_args[0]exit)==0);{
     exit(0);
@@ -145,7 +148,15 @@ int getinput(char **args, int maxargs){
         if (DEBUG_GETINPUT){
           printf("That word has %d letters. \n", letterindex+1);
           //Add the null terminatior
-          
+          if (letterindex<(BUFFER_L-1)){
+            args[numargs][letterindex+1] = '\0';
+          }else{
+            printf("Error -- Arguement exceeds maximum allowed length. \n");
+            return(numargs+1); //Exit the function
+          }//End else
+          if (DEBUG_GETINPUT){
+            printf("Read the %d-th word %s.\n", numargs, args[numargs]);
+          }
         }//End Debug if
       }//End inword if
     }//End if
