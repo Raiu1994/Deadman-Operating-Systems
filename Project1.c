@@ -2,7 +2,7 @@
 //Project 1
 
 #include <stdio.h>
-#include <sdtlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -15,9 +15,9 @@
 #define DEBUG_GETINPUT 0
 #define DEBUG_FORK 0
 
-#define Max_NUM_ARGS 256 //setting max
-#define Max_Char 256 //Max amount of characters
-#define Buffer_L 256 //Limit of buffer
+#define MAX_NUM_ARGS 256 //setting max
+#define MAX_NUM_CHAR 256 //Max amount of characters
+#define BUFFER_L 256 //Limit of buffer
 
 #define OUT_OF_MEMORY_ERROR 2 //malloc has failed to get memory
 #define CANT_FORK_ERROR 4 //Error with fork
@@ -27,7 +27,7 @@
 int getinput(char **args, int maxargs);
 
 int main(void){
-   char input_args = NULL;
+   char input_args[0];
    int pid = 0; // process id for fork
    int returnval = 0; //exec vp useage
    int errorval = 0; // inside wait pid
@@ -48,7 +48,7 @@ int main(void){
       }//End if
 
       //Allocate the memory
-      input_args=(char **)malloc(sizeof(char*) * MAX_NUM_ARGS);
+      input_args == (char **)malloc(sizeof(char*) * MAX_NUM_ARGS);
       //Check return value for errorval
       if (input_args == NULL){
         printf("Griffin Shell: Fatal out of memory error.\n");
@@ -56,7 +56,7 @@ int main(void){
       } //End if
 
       //Get the input, break into arguements
-      num_args = getinput(input_args, MAX_NUM_ARGS)
+      num_args = getinput(input_args, MAX_NUM_ARGS);
       if (DEBUG_MAIN){
         printf("%d arguements were entered:\n", num_args);
         for (i=0; i<num_args; i++){
@@ -70,11 +70,11 @@ if(num_args == 0);{ //If blank line, continue.
 }//Exit if
 
 //check for user enter "exit" to quit shell
-  if (strcmp(input_args[0]exit)==0);{
+  if (strcmp(input_args[0])("exit"){
     exit(0);
   } //End if
 
-} //end if
+
 
 //Execute the command using fork and execvp
 //Create child process
@@ -95,15 +95,18 @@ if(pid<0){
     printf("Griffin Shell: error waiting for child to exit.\n");
   }//End if
 
-    if (DEBUG_FORK)printf("Child process exited.\n")
-  } else { //this is the child
-    if(DEBUG_FORK) printf("Child calling execvp.\n");
+    if (DEBUG_FORK){
+      printf("Child process exited.\n");
+    } else { //this is the child
+    if(DEBUG_FORK) {
+      printf("Child calling execvp.\n");
+    }//End if
     returnval = execvp(input_args[0], input_args);
     //check errors
     if (returnval ==-1) {
-      printf("Griffin Shell: command %s not found.\n, input_args[0]");
+      printf("Griffin Shell: command %s not found.\n", input_args[0]);
     continue;
-  }//End if
+    }//End if
     exit(0);
     }// End else
    }//End while
@@ -128,7 +131,7 @@ int getinput(char **args, int maxargs){
 
     //Check to see if we have exceeded max.
     if (numchar > MAX_NUM_CHAR){
-      printf("Griffin Shell: Command too long. \n")
+      printf("Griffin Shell: Command too long. \n");
       //Grab the rest of the input and trash it
       while (curchar != '\n'){
         curchar = getc(stdin);
